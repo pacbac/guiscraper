@@ -1,4 +1,13 @@
 .button {
-    -fx-background-color: gray;
+    -fx-background-color: #1daee2;
+    -fx-text-fill: white;
+}
 
+.label {
+    -fx-font-size: 20px;
+}
+
+HBox {
+    -fx-border-style: solid;
+    -fx-border-color: #afafaf;
 }
