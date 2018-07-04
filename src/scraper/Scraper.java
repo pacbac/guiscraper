@@ -1,46 +1,48 @@
 package scraper;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import javax.swing.*;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
-public class Scraper {
+public class Scraper extends Application {
 	
-	private void initUI() {
-		JLabel header = new JLabel();
-		header.setText("<html>GUI Scraper by Clayton Chu <div style='background-color: blue; width: 70px; height: 30px;'></div></html>");
-		header.setFont(new Font("Lato", Font.PLAIN, 35));
-		header.setHorizontalAlignment(SwingConstants.CENTER);
-		header.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+	@Override
+	public void start(Stage primaryStage) {
+		primaryStage.setTitle("GUI Scraper");
+		Button btn = new Button();
+		btn.setText("Retrieve HTML");
+		btn.setOnAction(evt -> {
+			String curl = "bash -c 'curl -L http://www.google.com'";
+			Runtime run = Runtime.getRuntime();
+			Process pr;
+			try {
+				pr = run.exec(curl);
+				pr.waitFor();
+				BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+				String line;
+				while((line = buf.readLine()) != null)
+					System.out.println(line);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
 		
-		JPanel headerBox = new JPanel(new BorderLayout());
-		headerBox.add(header, BorderLayout.NORTH);
-		
-		JFrame frame = new JFrame();
-		frame.add(headerBox);
-		frame.setVisible(true);
+		StackPane root = new StackPane();
+		Scene scene = new Scene(root, 400, 400);
+		scene.getStylesheets().add("resources/style.css");
+		primaryStage.setScene(scene);
+		root.getChildren().add(btn);
+		primaryStage.show();
 	}
 	
-	Scraper(){
-		initUI();
-	}
-	
-	public static void main(String[] args) throws IOException, InterruptedException {
-		String cmd = "bash -c 'curl -L http://www.google.com'";
-		Runtime run = Runtime.getRuntime();
-		Process pr = run.exec(cmd);
-		pr.waitFor();
-		BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-		String line = "";
-		while((line = buf.readLine()) != null)
-			System.out.println(line);
-		
-		new Scraper();
+	public static void main(String[] args) {
+		launch(args);
 	}
 	
 }
