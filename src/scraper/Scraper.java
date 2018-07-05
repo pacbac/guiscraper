@@ -11,14 +11,14 @@ public class Scraper extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) throws IOException {
-		primaryStage.setTitle("GUI Scraper");
+		primaryStage.setTitle("GUI Scraper by Clayton Chu");
 		FXMLLoader loader = new FXMLLoader(this.getClass().getResource("../resources/layout.fxml"));
 		Parent root = loader.load();
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add("resources/style.css");
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);
-		primaryStage.show();
+		primaryStage.show(); 
 	}
 	
 	public static void main(String[] args) {
