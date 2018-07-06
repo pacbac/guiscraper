@@ -2,7 +2,7 @@
 
 A Java application that allows you to easily scrape HTML off of websites with a few extra customizable options. It can organize the HTML/CSS/JS, as well.
 
-### Prerequisites
+## Prerequisites
 
 - Java 8+ for JavaFX
 - Bash 
