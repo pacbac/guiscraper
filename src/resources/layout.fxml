@@ -1,24 +1,24 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml" prefHeight="600.0" prefWidth="1000.0" fx:controller="scraper.Controller" fx:id="pane">
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml" prefHeight="800.0" prefWidth="1400.0" fx:controller="scraper.Controller" fx:id="pane">
     <top>
         <VBox fx:id="userStuff">
             <HBox prefWidth="600.0" prefHeight="60.0" alignment="CENTER" spacing="10" fx:id="requestBox" id="requestBox">
-                <TextField fx:id="url" prefHeight="40.0" prefWidth="500.0"/>
+                <TextField fx:id="url" prefHeight="40.0" prefWidth="700.0"/>
                 <Button text="Scrape" fx:id="getHTML" onAction="#retrieve" prefHeight="40.0"/>
             </HBox>
             <HBox spacing="10" fx:id="options" id="options">
-                <CheckBox fx:id="JSBox" text="No JS"/>
                 <CheckBox fx:id="CSSBox" text="No CSS"/>
+                <CheckBox fx:id="JSBox" text="No JS"/>
             </HBox>
         </VBox> 
     </top>
     <center>
-        <VBox>
+        <HBox>
             <TextArea prefHeight="350" fx:id="htmlOutput" id="htmlOutput"/>
             <TextArea fx:id="cssOutput" id="cssOutput"/>
             <TextArea fx:id="jsOutput" id="jsOutput"/>
-        </VBox>
+        </HBox>
     </center>
 </BorderPane>

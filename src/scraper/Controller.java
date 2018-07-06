@@ -32,7 +32,7 @@ public class Controller implements Initializable {
 	private boolean excludeJS;
 	private boolean excludeCSS;
 	
-	public void excludeElement(StringBuffer buf, String tag) {
+	public void removeElement(StringBuffer buf, String tag) {
 		int startPos = buf.indexOf("<"+tag);
 		int endPos = (buf.indexOf("</"+tag+">") >= 0) ? (buf.indexOf("</"+tag+">")+("</"+tag+">").length()) : buf.length();
 		while(startPos >= 0) {
@@ -55,13 +55,39 @@ public class Controller implements Initializable {
 		while((line = buf.readLine()) != null)
 			totalOut.append(line);
 		
-		if(this.excludeJS) excludeElement(totalOut, "script");
-		if(this.excludeCSS) excludeElement(totalOut, "style");
-//		else {
-//			
-//		}
-		totalOut = new StringBuffer(totalOut.toString().replaceAll(">[\\s]{2}", ">\n"));
+		//output JS to JS textbox 
+		if(!this.excludeJS) {
+			StringBuffer tempTotal = new StringBuffer(totalOut);
+			StringBuffer jsOut = new StringBuffer();
+			int startPos = tempTotal.indexOf("<script");
+			int endPos = (tempTotal.indexOf("</script>") >= 0) ? (tempTotal.indexOf("</script>")+("</script>").length()) : tempTotal.length();
+			while(startPos >= 0) {
+				jsOut.append(tempTotal.substring(startPos, endPos)+"\n");
+				tempTotal.delete(0, endPos);
+				startPos = tempTotal.indexOf("<script");
+				endPos = (tempTotal.indexOf("/script>") >= 0) ? (tempTotal.indexOf("/script>")+("/script>").length()) : tempTotal.length();
+			}
+			jsOutput.setText(jsOut.toString());
+		}
+		removeElement(totalOut, "script");
 		
+		//output CSS to CSS textbox
+		if(!this.excludeCSS) {
+			StringBuffer tempTotal = new StringBuffer(totalOut);
+			StringBuffer cssOut = new StringBuffer();
+			int startPos = tempTotal.indexOf("<style");
+			int endPos = (tempTotal.indexOf("</style>") >= 0) ? (tempTotal.indexOf("</style>")+("</style>").length()) : tempTotal.length();
+			while(startPos >= 0) {
+				cssOut.append(tempTotal.substring(startPos, endPos)+"\n");
+				tempTotal.delete(0, endPos);
+				startPos = tempTotal.indexOf("<style");
+				endPos = (tempTotal.indexOf("/style>") >= 0) ? (tempTotal.indexOf("/style>")+("/style>").length()) : tempTotal.length();
+			}
+			cssOutput.setText(cssOut.toString());
+		}
+		removeElement(totalOut, "style");
+		
+		totalOut = new StringBuffer(totalOut.toString().replaceAll(">[\\s]{2}", ">\n"));
 		htmlOutput.setText(totalOut.toString());
 		//System.out.println(totalOut.toString());
 		buf.close(); //close connection to file so delete will work

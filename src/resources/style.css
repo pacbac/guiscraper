@@ -12,7 +12,6 @@ Label {
     -fx-border-color: #afafaf;
 }
 
-
 TextArea#htmlOutput, TextArea#cssOutput {
-    -fx-padding: 0 0 10px 0;
+    -fx-padding: 0 10px 0 0;
 }
