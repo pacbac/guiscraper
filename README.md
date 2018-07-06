@@ -24,4 +24,4 @@ A Java application that allows you to easily scrape HTML off of websites with a 
 
 ## Authors
 
-* **Billie Thompson** - [pacbac](https://github.com/pacbac)
+* **Clayton Chu** - [pacbac](https://github.com/pacbac)
