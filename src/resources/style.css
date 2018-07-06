@@ -1,13 +1,18 @@
-.button {
+Button {
     -fx-background-color: #1daee2;
     -fx-text-fill: white;
 }
 
-.label {
+Label {
     -fx-font-size: 20px;
 }
 
-HBox {
+#requestBox {
     -fx-border-style: solid;
     -fx-border-color: #afafaf;
+}
+
+
+TextArea#htmlOutput, TextArea#cssOutput {
+    -fx-padding: 0 0 10px 0;
 }
