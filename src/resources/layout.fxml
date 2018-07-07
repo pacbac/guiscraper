@@ -6,7 +6,7 @@
         <VBox fx:id="userStuff">
             <HBox prefWidth="600.0" prefHeight="60.0" alignment="CENTER" spacing="10" fx:id="requestBox" id="requestBox">
                 <TextField fx:id="url" prefHeight="40.0" prefWidth="700.0"/>
-                <Button text="Scrape" fx:id="getHTML" onAction="#retrieve" prefHeight="40.0"/>
+                <Button text="Scrape" fx:id="getHTML" onAction="#retrieveThread" prefHeight="40.0"/>
             </HBox>
             <HBox spacing="10" fx:id="options" id="options">
                 <CheckBox fx:id="CSSBox" text="No CSS"/>

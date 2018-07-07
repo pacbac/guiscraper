@@ -11,7 +11,7 @@ public class Scraper extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) throws IOException {
-		primaryStage.setTitle("GUI Scraper by Clayton Chu");
+		primaryStage.setTitle("GUIScraper by Clayton Chu");
 		FXMLLoader loader = new FXMLLoader(this.getClass().getResource("../resources/layout.fxml"));
 		Parent root = loader.load();
 		Scene scene = new Scene(root);

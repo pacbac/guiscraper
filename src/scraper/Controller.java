@@ -15,6 +15,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+
+
 public class Controller implements Initializable {
 
 	@FXML private BorderPane pane;
@@ -42,7 +44,19 @@ public class Controller implements Initializable {
 		}
 	}
 	
-	public void retrieve() throws IOException, InterruptedException {
+	public void retrieveThread() {
+		Runnable runScrape = () -> {
+			try {
+				retrieve();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		};
+		Thread t = new Thread(runScrape);
+		t.start();
+	}
+	
+	private void retrieve() throws IOException, InterruptedException {
 		//Get HTML
 		String curl = "bash -c 'curl -L " + url.getText() + "' > cmdout.txt";
 		Runtime run = Runtime.getRuntime();
@@ -114,12 +128,8 @@ public class Controller implements Initializable {
 				cssOutput.setText("");
 		});
 		url.setOnKeyReleased(evt -> {
-			if(evt.getCode().equals(KeyCode.ENTER))
-				try {
-					retrieve();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+			if(evt.getCode().equals(KeyCode.ENTER)) 
+				retrieveThread();
 		});
 	}
 	
