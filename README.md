@@ -10,8 +10,9 @@ A Java application that allows you to easily scrape HTML off of websites with a 
   - MacOS/Linux don't need anything
 
 ## File Descriptions
-- ```src/scraper/Scraper.java``` entry point for the program
-- ```src/scraper/Controller.java``` contains most of the logic and some interface styling
+- ```src/scraper/Main.java``` entry point for the program
+- ```src/scraper/Scraper.java``` contains most of the logic
+- ```src/scraper/Controller.java``` controls the behavior of the interface, and some interface styling
 - ```src/resources/layout.fxml``` describes the interface structure
 - ```src/resources/style.css``` contains the rest of the interface styling
 
