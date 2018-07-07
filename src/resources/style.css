@@ -29,3 +29,8 @@ TextArea#htmlOutput, TextArea#cssOutput {
     -fx-font-weight: bold;
     -fx-font-size: 18px;
 }
+
+#loadingMsg {
+    -fx-text-fill: black;
+    -fx-font-size: 18px;
+}

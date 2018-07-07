@@ -15,6 +15,7 @@
             </HBox>
             <HBox prefWidth="600.0">
                 <Label prefWidth="300.0" prefHeight="40.0" fx:id="errorMsg" id="errorMsg" text="" />
+                <Pane id="spacer" HBox.hgrow="ALWAYS"/>
                 <Label prefWidth="300.0" prefHeight="40.0" fx:id="loadingMsg" id="loadingMsg" text=""/>
             </HBox>
         </VBox> 

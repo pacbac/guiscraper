@@ -2,9 +2,12 @@ package scraper;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
@@ -29,7 +32,7 @@ public class Controller implements Initializable {
 	@FXML private TextArea cssOutput;
 	@FXML private TextArea jsOutput;
 	@FXML private TextField url;
-	@FXML private Label errorMsg;
+	@FXML private volatile Label errorMsg;
 	@FXML private volatile Label loadingMsg;
 	private Scraper scraper;
 	private Stage stage;
@@ -40,13 +43,16 @@ public class Controller implements Initializable {
 	public void retrieveThread() {
 		Runnable runScrape = () -> {
 			try {
-				//setLoadingTxt("Getting data...");
+				Platform.runLater(() -> { //enables non-FX application thread to update UI elements
+					setLoadingTxt("Getting data...");
+					setErrorTxt("");
+				});
 				scraper.retrieve(url.getText());
 			} catch (Exception e) {
 				e.printStackTrace();
-				//setErrorTxt("Error: could not retrieve data");
+				Platform.runLater(() -> setErrorTxt("Error: could not retrieve data"));
 			}
-			//setLoadingTxt("");
+			Platform.runLater(() -> setLoadingTxt(""));
 		};
 		Thread t = new Thread(runScrape);
 		t.start();
@@ -119,6 +125,7 @@ public class Controller implements Initializable {
 		scraper = new Scraper(stage, this);
 		initOptions();
 		initOutput();
+		loadingMsg.setAlignment(Pos.CENTER_RIGHT);
 		url.setPromptText("URL to scrape");
 		requestBox.setMargin(url, new Insets(5));
 		pane.setMargin(pane.getTop(), new Insets(10));
