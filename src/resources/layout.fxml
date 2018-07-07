@@ -11,6 +11,7 @@
             <HBox spacing="10" fx:id="options" id="options">
                 <CheckBox fx:id="CSSBox" text="No CSS"/>
                 <CheckBox fx:id="JSBox" text="No JS"/>
+                <CheckBox fx:id="saveBox" text="Save output"/>
             </HBox>
         </VBox> 
     </top>
