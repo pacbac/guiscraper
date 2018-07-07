@@ -1,5 +1,6 @@
 package scraper;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

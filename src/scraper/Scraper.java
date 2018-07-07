@@ -3,7 +3,9 @@ package scraper;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 public class Scraper {
@@ -12,8 +14,10 @@ public class Scraper {
 	private boolean excludeJS;
 	private boolean excludeCSS;
 	private Controller controller;
+	private Stage stage;
 	
 	public Scraper(Stage stage, Controller controller) {
+		this.stage = stage;
 		this.controller = controller;
 		this.excludeJS = this.excludeCSS = true;
 		buf = new StringBuffer();
@@ -60,28 +64,66 @@ public class Scraper {
 	}
 	
 	public void retrieve(String url) throws IOException, InterruptedException {
-		//Get HTML
+		//save HTML to scraper's buffer
 		buf = getHTML(url);
 		
-		//output JS to JS textbox 
-		if(!this.excludeJS) {
-			StringBuffer jsOut = parseTag("script");
-			controller.getJSTextArea().setText(jsOut.toString());
+		//output JS to JS textbox
+		{
+			if(!this.excludeJS) {
+				StringBuffer jsOut = parseTag("script");
+				controller.getJSTextArea().setText(jsOut.toString());
+			}
+			removeElement("script");
 		}
-		removeElement("script");
 		
 		//output CSS to CSS textbox
-		if(!this.excludeCSS) {
-			StringBuffer cssOut = parseTag("style");
-			controller.getCSSTextArea().setText(cssOut.toString());
+		{
+			if(!this.excludeCSS) {
+				StringBuffer cssOut = parseTag("style");
+				controller.getCSSTextArea().setText(cssOut.toString());
+			}
+			removeElement("style");
 		}
-		removeElement("style");
 		
 		buf = new StringBuffer(buf.toString().replaceAll(">[\\s]{2}", ">\n"));
 		controller.getHTMLTextArea().setText(buf.toString());
 		File tempOutput = new File("cmdout.txt");
-		if(tempOutput.exists())
+		if(tempOutput.exists()) //delete file after temporary storage use
 			tempOutput.delete();
+	}
+	
+	public String saveFile() {
+			DirectoryChooser choose = new DirectoryChooser();
+			File dir = choose.showDialog(stage);
+			//File error
+			if(dir == null || !dir.isDirectory())
+				return dir == null ? "Directory not chosen" : "Error: not a directory";
+			else if(controller.getHTMLTextArea().getText().equals("")) //TextArea error
+				return "Error: No content to save";
+				
+			String[] dirFiles = dir.list((directory, name) -> name.matches("^scrape[0-9]+[.]txt"));
+			String fileNameMax = dirFiles.length > 0 ? dirFiles[dirFiles.length - 1] : "scrape0.txt";
+			String sp = System.lineSeparator();
+			int nextIndex = Integer.parseInt(fileNameMax.substring(6, fileNameMax.indexOf('.'))) + 1;
+			String saveText = "HTML:" + sp + controller.getHTMLTextArea().getText() + sp + "CSS:" + sp + controller.getCSSTextArea().getText()
+				+ sp + "JS:" + sp + controller.getJSTextArea().getText();
+			try {
+				FileWriter filewrite = new FileWriter(new File(dir, "scrape"+nextIndex+".txt"));
+				filewrite.write(saveText);
+				filewrite.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return "Error: Could not write to file" + e;
+			}
+			return "";
+	}
+	
+	public void toggleExcludeJS() {
+		this.excludeJS = !this.excludeJS;
+	}
+	
+	public void toggleExcludeCSS() {
+		this.excludeCSS = !this.excludeCSS;
 	}
 	
 }

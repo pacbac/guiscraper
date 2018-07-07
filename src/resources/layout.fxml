@@ -6,12 +6,16 @@
         <VBox fx:id="userStuff">
             <HBox prefWidth="600.0" prefHeight="60.0" alignment="CENTER" spacing="10" fx:id="requestBox" id="requestBox">
                 <TextField fx:id="url" prefHeight="40.0" prefWidth="700.0"/>
-                <Button text="Scrape" fx:id="getHTML" onAction="#retrieveThread" prefHeight="40.0"/>
+                <Button text="Scrape" fx:id="getHTML" id="getHTML" onAction="#retrieveThread" prefHeight="40.0"/>
             </HBox>
-            <HBox spacing="10" fx:id="options" id="options">
+            <HBox spacing="10" fx:id="options" id="options" alignment="CENTER">
                 <CheckBox fx:id="CSSBox" text="No CSS"/>
                 <CheckBox fx:id="JSBox" text="No JS"/>
-                <CheckBox fx:id="saveBox" text="Save output"/>
+                <Button fx:id="save" id="save" text="Save output"/>
+            </HBox>
+            <HBox prefWidth="600.0">
+                <Label prefWidth="300.0" prefHeight="40.0" fx:id="errorMsg" id="errorMsg" text="" />
+                <Label prefWidth="300.0" prefHeight="40.0" fx:id="loadingMsg" id="loadingMsg" text=""/>
             </HBox>
         </VBox> 
     </top>

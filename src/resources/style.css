@@ -1,10 +1,18 @@
 Button {
-    -fx-background-color: #1daee2;
     -fx-text-fill: white;
+    -fx-font-size: 16px;
 }
 
-Label {
-    -fx-font-size: 20px;
+Button:hover {
+    -fx-cursor: hand;
+}
+
+#getHTML {
+    -fx-background-color: #1daee2;
+}
+
+#save {
+    -fx-background-color: green;
 }
 
 #requestBox {
@@ -14,4 +22,10 @@ Label {
 
 TextArea#htmlOutput, TextArea#cssOutput {
     -fx-padding: 0 10px 0 0;
+}
+
+#errorMsg {
+    -fx-text-fill: red;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
 }

@@ -1,9 +1,5 @@
 package scraper;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -14,7 +10,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 
@@ -29,11 +24,13 @@ public class Controller implements Initializable {
 	@FXML private Button getHTML;
 	@FXML private CheckBox JSBox;
 	@FXML private CheckBox CSSBox;
-	@FXML private CheckBox saveBox;
+	@FXML private Button save;
 	@FXML private TextArea htmlOutput;
 	@FXML private TextArea cssOutput;
 	@FXML private TextArea jsOutput;
 	@FXML private TextField url;
+	@FXML private Label errorMsg;
+	@FXML private volatile Label loadingMsg;
 	private Scraper scraper;
 	private Stage stage;
 	
@@ -43,13 +40,24 @@ public class Controller implements Initializable {
 	public void retrieveThread() {
 		Runnable runScrape = () -> {
 			try {
+				//setLoadingTxt("Getting data...");
 				scraper.retrieve(url.getText());
 			} catch (Exception e) {
 				e.printStackTrace();
+				//setErrorTxt("Error: could not retrieve data");
 			}
+			//setLoadingTxt("");
 		};
 		Thread t = new Thread(runScrape);
 		t.start();
+	}
+	
+	private void setLoadingTxt(String text) {
+		loadingMsg.setText(text);
+	}
+	
+	private void setErrorTxt(String text) {
+		errorMsg.setText(text);
 	}
 	
 	private void initOptions() {
@@ -58,21 +66,18 @@ public class Controller implements Initializable {
 		
 		//toggle option boxes on click
 		JSBox.setOnAction(evt -> {
-			JSBox.setSelected(!JSBox.isSelected());
 			jsOutput.setDisable(JSBox.isSelected());
+			scraper.toggleExcludeJS();
 			if(JSBox.isSelected())
 				jsOutput.setText("");
 		});
 		CSSBox.setOnAction(evt -> {
-			CSSBox.setSelected(!CSSBox.isSelected());
 			cssOutput.setDisable(CSSBox.isSelected());
+			scraper.toggleExcludeCSS();
 			if(CSSBox.isSelected())
 				cssOutput.setText("");
 		});
-		saveBox.setOnAction(evt -> {
-			FileChooser choose = new FileChooser();
-			File file = choose.showOpenDialog(stage);
-		});
+		save.setOnAction(evt -> errorMsg.setText(scraper.saveFile()));
 		url.setOnKeyReleased(evt -> {
 			if(evt.getCode().equals(KeyCode.ENTER)) 
 				retrieveThread();
