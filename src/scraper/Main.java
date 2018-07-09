@@ -1,7 +1,5 @@
 package scraper;
 import java.io.IOException;
-import java.util.regex.Pattern;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,7 +19,6 @@ public class Main extends Application {
 		primaryStage.show();
 		Controller controller = loader.getController();
 		controller.setStage(primaryStage);
-		
 	}
 	
 	public static void main(String[] args) {

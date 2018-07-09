@@ -62,7 +62,7 @@ public class Controller implements Initializable {
 		loadingMsg.setText(text);
 	}
 	
-	private void setErrorTxt(String text) {
+	public void setErrorTxt(String text) {
 		errorMsg.setText(text);
 	}
 	

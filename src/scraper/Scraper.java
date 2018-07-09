@@ -34,6 +34,10 @@ public class Scraper {
 	}
 	
 	public StringBuffer getHTML(String url) throws IOException, InterruptedException {
+		if(url.equals("")) {
+			controller.setErrorTxt("Error: No URL");
+		}
+		
 		String curl = "bash -c 'curl -L " + url + "' > cmdout.txt";
 		Runtime run = Runtime.getRuntime();
 		Process pr;
@@ -105,8 +109,9 @@ public class Scraper {
 			String fileNameMax = dirFiles.length > 0 ? dirFiles[dirFiles.length - 1] : "scrape0.txt";
 			String sp = System.lineSeparator();
 			int nextIndex = Integer.parseInt(fileNameMax.substring(6, fileNameMax.indexOf('.'))) + 1;
-			String saveText = "HTML:" + sp + controller.getHTMLTextArea().getText() + sp + "CSS:" + sp + controller.getCSSTextArea().getText()
-				+ sp + "JS:" + sp + controller.getJSTextArea().getText();
+			String saveText = "HTML:" + sp + controller.getHTMLTextArea().getText() 
+					+ (controller.getCSSTextArea().getText().equals("") ? "" : (sp + "CSS:" + sp + controller.getCSSTextArea().getText()))
+					+ (controller.getJSTextArea().getText().equals("") ? "" : (sp + "JS:" + sp + controller.getJSTextArea().getText()));
 			try {
 				FileWriter filewrite = new FileWriter(new File(dir, "scrape"+nextIndex+".txt"));
 				filewrite.write(saveText);
