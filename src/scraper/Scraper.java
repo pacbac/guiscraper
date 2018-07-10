@@ -36,6 +36,7 @@ public class Scraper {
 	public StringBuffer getHTML(String url) throws IOException, InterruptedException {
 		if(url.equals("")) {
 			controller.setErrorTxt("Error: No URL");
+			return new StringBuffer();
 		}
 		
 		String curl = "bash -c 'curl -L " + url + "' > cmdout.txt";
