@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Stack;
+
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
@@ -56,12 +58,20 @@ public class Scraper {
 	
 	private StringBuilder parseTag(String tag) {
 		StringBuilder out = new StringBuilder(); //output buffer
+		Stack<Integer> trackNested = new Stack<Integer>(); //track nested elements with push/pop
 		int startPos = buf.indexOf("<"+tag);
 		int endPos = (buf.indexOf("</"+tag+">") >= 0) ? (buf.indexOf("</"+tag+">")+("</"+tag+">").length()) : buf.length();
-		while(startPos >= 0 && endPos > startPos) {
-			out.append(buf.substring(startPos, endPos)+"\n");
-			startPos = buf.indexOf("<"+tag, endPos);
-			endPos = (buf.indexOf("</"+tag+">", endPos) >= 0) ? (buf.indexOf("</"+tag+">", endPos)+("</"+tag+">").length()) : buf.length();
+		while(startPos >= 0) {
+			if(startPos < endPos) {
+				trackNested.push(startPos);
+				startPos = buf.indexOf("<"+tag, startPos+("<"+tag).length());
+			} else {
+				while(!trackNested.isEmpty()) {
+					out.append(buf.substring(trackNested.pop(), endPos)+"\n");
+					endPos = (buf.indexOf("</"+tag+">", endPos) >= 0) ? (buf.indexOf("</"+tag+">", endPos)+("</"+tag+">").length()) : buf.length();
+				}
+				endPos = (buf.indexOf("</"+tag+">", startPos) >= 0) ? (buf.indexOf("</"+tag+">", startPos)+("</"+tag+">").length()) : buf.length();
+			}
 		}
 		return out;
 	}
