@@ -59,7 +59,6 @@ public class Scraper {
 		int startPos = buf.indexOf("<"+tag);
 		int endPos = (buf.indexOf("</"+tag+">") >= 0) ? (buf.indexOf("</"+tag+">")+("</"+tag+">").length()) : buf.length();
 		while(startPos >= 0 && endPos > startPos) {
-			System.out.println(startPos + " " + endPos);
 			out.append(buf.substring(startPos, endPos)+"\n");
 			startPos = buf.indexOf("<"+tag, endPos);
 			endPos = (buf.indexOf("</"+tag+">", endPos) >= 0) ? (buf.indexOf("</"+tag+">", endPos)+("</"+tag+">").length()) : buf.length();
@@ -131,7 +130,6 @@ public class Scraper {
 			StringBuilder tagBuf = parseTag(tagElem);
 			result.append(tagBuf);
 		}
-		System.out.println("tag: " + result.toString());
 		return result.toString();
 	}
 	

@@ -34,3 +34,11 @@ TextArea#htmlOutput, TextArea#cssOutput {
     -fx-text-fill: black;
     -fx-font-size: 18px;
 }
+
+TextArea {
+    -fx-border-radius: 0;
+}
+
+#searchHistHeader {
+    -fx-font-size: 20px;
+}

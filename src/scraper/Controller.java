@@ -2,7 +2,6 @@ package scraper;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,10 +20,8 @@ public class Controller implements Initializable {
 
 	@FXML private BorderPane pane;
 	@FXML private VBox userStuff;
-	@FXML private VBox searchSection;
 	@FXML private HBox requestBox;
 	@FXML private HBox options;
-	@FXML private HBox searchQuery;
 	@FXML private Label header;
 	@FXML private Button getHTML;
 	@FXML private Button searchBtn;
@@ -39,6 +36,7 @@ public class Controller implements Initializable {
 	@FXML private TextField searchBox;
 	@FXML private volatile Label errorMsg;
 	@FXML private volatile Label loadingMsg;
+//	@FXML private ListView searchHist;
 	private Scraper scraper;
 	private Stage stage;
 	
@@ -130,7 +128,7 @@ public class Controller implements Initializable {
 		cssOutput.setDisable(true);
 	}
 	
-	public void setStage(Stage stage) {
+	protected void setStage(Stage stage) {
 		this.stage = stage;
 	}
 
@@ -142,11 +140,11 @@ public class Controller implements Initializable {
 		loadingMsg.setAlignment(Pos.CENTER_RIGHT);
 		searchBox.setPromptText("Search HTML tags in a list, ex. 'li a div'");
 		url.setPromptText("URL to scrape");
-		searchSection.setMargin(searchBox, new Insets(5));
-		searchQuery.setMargin(searchOutput, new Insets(10));
-		requestBox.setMargin(url, new Insets(5));
-		pane.setMargin(pane.getTop(), new Insets(10));
-		userStuff.setMargin(options, new Insets(10));
+		HBox.setMargin(searchOutput, new Insets(10));
+		HBox.setMargin(url, new Insets(5));
+		BorderPane.setMargin(pane.getTop(), new Insets(10));
+		VBox.setMargin(options, new Insets(10));
+		searchOutput.setEditable(false);
 		
 	}
 	
