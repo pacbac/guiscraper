@@ -26,7 +26,7 @@ public class Scraper {
 	private void removeElement(String tag) {
 		int startPos = buf.indexOf("<"+tag);
 		int endPos = (buf.indexOf("</"+tag+">") >= 0) ? (buf.indexOf("</"+tag+">")+("</"+tag+">").length()) : buf.length();
-		while(startPos >= 0) {
+		while(startPos >= 0 && endPos > startPos) {
 			buf.delete(startPos, endPos);
 			startPos = buf.indexOf("<"+tag);
 			endPos = (buf.indexOf("</"+tag+">") >= 0) ? (buf.indexOf("</"+tag+">")+("</"+tag+">").length()) : buf.length();
@@ -58,7 +58,8 @@ public class Scraper {
 		StringBuilder out = new StringBuilder(); //output buffer
 		int startPos = buf.indexOf("<"+tag);
 		int endPos = (buf.indexOf("</"+tag+">") >= 0) ? (buf.indexOf("</"+tag+">")+("</"+tag+">").length()) : buf.length();
-		while(startPos >= 0) {
+		while(startPos >= 0 && endPos > startPos) {
+			System.out.println(startPos + " " + endPos);
 			out.append(buf.substring(startPos, endPos)+"\n");
 			startPos = buf.indexOf("<"+tag, endPos);
 			endPos = (buf.indexOf("</"+tag+">", endPos) >= 0) ? (buf.indexOf("</"+tag+">", endPos)+("</"+tag+">").length()) : buf.length();
@@ -120,6 +121,18 @@ public class Scraper {
 				return "Error: Could not write to file" + e;
 			}
 			return "";
+	}
+	
+	public String search(String tag) {
+		String[] tagList = tag.split(" ");
+		StringBuilder result = new StringBuilder();
+		for(String tagElem : tagList) {
+			if(buf.indexOf("<"+tagElem+">") == -1 && buf.indexOf("<"+tagElem+" ") == -1) continue;
+			StringBuilder tagBuf = parseTag(tagElem);
+			result.append(tagBuf);
+		}
+		System.out.println("tag: " + result.toString());
+		return result.toString();
 	}
 	
 	public void toggleExcludeJS() {

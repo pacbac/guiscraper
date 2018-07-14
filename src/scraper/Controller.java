@@ -21,10 +21,13 @@ public class Controller implements Initializable {
 
 	@FXML private BorderPane pane;
 	@FXML private VBox userStuff;
+	@FXML private VBox searchSection;
 	@FXML private HBox requestBox;
 	@FXML private HBox options;
+	@FXML private HBox searchQuery;
 	@FXML private Label header;
 	@FXML private Button getHTML;
+	@FXML private Button searchBtn;
 	@FXML private CheckBox JSBox;
 	@FXML private CheckBox CSSBox;
 	@FXML private Button save;
@@ -32,6 +35,8 @@ public class Controller implements Initializable {
 	@FXML private TextArea cssOutput;
 	@FXML private TextArea jsOutput;
 	@FXML private TextField url;
+	@FXML private TextArea searchOutput;
+	@FXML private TextField searchBox;
 	@FXML private volatile Label errorMsg;
 	@FXML private volatile Label loadingMsg;
 	private Scraper scraper;
@@ -88,6 +93,11 @@ public class Controller implements Initializable {
 			if(evt.getCode().equals(KeyCode.ENTER)) 
 				retrieveThread();
 		});
+		searchBtn.setOnAction(evt -> searchOutput.setText(scraper.search(searchBox.getText())));
+		searchBox.setOnKeyPressed(key -> {
+			if(key.getCode().equals(KeyCode.ENTER))
+				searchOutput.setText(scraper.search(searchBox.getText()));
+		});
 	}
 	
 	public TextArea getHTMLTextArea() {
@@ -100,6 +110,10 @@ public class Controller implements Initializable {
 	
 	public TextArea getJSTextArea() {
 		return jsOutput;
+	}
+	
+	public TextArea getSearchTextArea() {
+		return searchOutput;
 	}
 	
 	private void initOutput() {
@@ -126,10 +140,14 @@ public class Controller implements Initializable {
 		initOptions();
 		initOutput();
 		loadingMsg.setAlignment(Pos.CENTER_RIGHT);
+		searchBox.setPromptText("Search HTML tags in a list, ex. 'li a div'");
 		url.setPromptText("URL to scrape");
+		searchSection.setMargin(searchBox, new Insets(5));
+		searchQuery.setMargin(searchOutput, new Insets(10));
 		requestBox.setMargin(url, new Insets(5));
 		pane.setMargin(pane.getTop(), new Insets(10));
 		userStuff.setMargin(options, new Insets(10));
+		
 	}
 	
 }

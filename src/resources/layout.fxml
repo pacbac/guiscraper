@@ -27,4 +27,13 @@
             <TextArea fx:id="jsOutput" id="jsOutput"/>
         </HBox>
     </center>
+    <bottom>
+        <VBox alignment="CENTER" fx:id="searchSection">
+            <HBox alignment="CENTER" spacing="5" fx:id="searchQuery">
+                <TextField prefWidth="600.0" prefHeight="40.0" fx:id="searchBox" id="searchBox" />
+                <Button prefHeight="40.0" fx:id="searchBtn" id="searchBtn" text="Search" />
+            </HBox>
+            <TextArea maxWidth="500" maxHeight="150.0" fx:id="searchOutput"/>
+        </VBox>
+    </bottom>
 </BorderPane>

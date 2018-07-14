@@ -7,7 +7,7 @@ Button:hover {
     -fx-cursor: hand;
 }
 
-#getHTML {
+#getHTML, #searchBtn {
     -fx-background-color: #1daee2;
 }
 
