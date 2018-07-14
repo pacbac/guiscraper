@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 public class Scraper {
 	
-	private StringBuffer buf;
+	private StringBuilder buf;
 	private boolean excludeJS;
 	private boolean excludeCSS;
 	private Controller controller;
@@ -20,7 +20,7 @@ public class Scraper {
 		this.stage = stage;
 		this.controller = controller;
 		this.excludeJS = this.excludeCSS = true;
-		buf = new StringBuffer();
+		buf = new StringBuilder();
 	}
 	
 	private void removeElement(String tag) {
@@ -33,10 +33,10 @@ public class Scraper {
 		}
 	}
 	
-	public StringBuffer getHTML(String url) throws IOException, InterruptedException {
+	public StringBuilder getHTML(String url) throws IOException, InterruptedException {
 		if(url.equals("")) {
 			controller.setErrorTxt("Error: No URL");
-			return new StringBuffer();
+			return new StringBuilder();
 		}
 		
 		String curl = "bash -c 'curl -L " + url + "' > cmdout.txt";
@@ -46,7 +46,7 @@ public class Scraper {
 		pr.waitFor();
 		BufferedReader buffer = new BufferedReader(new FileReader("cmdout.txt"));
 		String line;
-		StringBuffer totalOut = new StringBuffer();
+		StringBuilder totalOut = new StringBuilder();
 		while((line = buffer.readLine()) != null)
 			totalOut.append(line);
 		buffer.close(); //close connection to file so delete will work
@@ -54,16 +54,14 @@ public class Scraper {
 		return totalOut;
 	}
 	
-	private StringBuffer parseTag(String tag) {
-		StringBuffer tempTotal = new StringBuffer(buf); //temporary buffer w/ everything (that will be manipulated)
-		StringBuffer out = new StringBuffer(); //output buffer
-		int startPos = tempTotal.indexOf("<"+tag);
-		int endPos = (tempTotal.indexOf("</"+tag+">") >= 0) ? (tempTotal.indexOf("</"+tag+">")+("</"+tag+">").length()) : tempTotal.length();
+	private StringBuilder parseTag(String tag) {
+		StringBuilder out = new StringBuilder(); //output buffer
+		int startPos = buf.indexOf("<"+tag);
+		int endPos = (buf.indexOf("</"+tag+">") >= 0) ? (buf.indexOf("</"+tag+">")+("</"+tag+">").length()) : buf.length();
 		while(startPos >= 0) {
-			out.append(tempTotal.substring(startPos, endPos)+"\n");
-			tempTotal.delete(0, endPos);
-			startPos = tempTotal.indexOf("<"+tag);
-			endPos = (tempTotal.indexOf("</"+tag+">") >= 0) ? (tempTotal.indexOf("</"+tag+">")+("</"+tag+">").length()) : tempTotal.length();
+			out.append(buf.substring(startPos, endPos)+"\n");
+			startPos = buf.indexOf("<"+tag, endPos);
+			endPos = (buf.indexOf("</"+tag+">", endPos) >= 0) ? (buf.indexOf("</"+tag+">", endPos)+("</"+tag+">").length()) : buf.length();
 		}
 		return out;
 	}
@@ -75,7 +73,7 @@ public class Scraper {
 		//output JS to JS textbox
 		{
 			if(!this.excludeJS) {
-				StringBuffer jsOut = parseTag("script");
+				StringBuilder jsOut = parseTag("script");
 				controller.getJSTextArea().setText(jsOut.toString());
 			}
 			removeElement("script");
@@ -84,13 +82,13 @@ public class Scraper {
 		//output CSS to CSS textbox
 		{
 			if(!this.excludeCSS) {
-				StringBuffer cssOut = parseTag("style");
+				StringBuilder cssOut = parseTag("style");
 				controller.getCSSTextArea().setText(cssOut.toString());
 			}
 			removeElement("style");
 		}
 		
-		buf = new StringBuffer(buf.toString().replaceAll(">[\\s]{2}", ">\n"));
+		buf = new StringBuilder(buf.toString().replaceAll(">[\\s]{2}", ">\n"));
 		controller.getHTMLTextArea().setText(buf.toString());
 		File tempOutput = new File("cmdout.txt");
 		if(tempOutput.exists()) //delete file after temporary storage use
