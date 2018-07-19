@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Stack;
+import java.util.ArrayDeque;
 
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
@@ -58,7 +58,7 @@ public class Scraper {
 	
 	private StringBuilder parseTag(String tag) {
 		StringBuilder out = new StringBuilder(); //output buffer
-		Stack<Integer> trackNested = new Stack<Integer>(); //track nested elements with push/pop
+		ArrayDeque<Integer> trackNested = new ArrayDeque<Integer>(); //track nested elements with push/pop
 		int startPos = buf.indexOf("<"+tag);
 		int endPos = (buf.indexOf("</"+tag+">") >= 0) ? (buf.indexOf("</"+tag+">")+("</"+tag+">").length()) : buf.length();
 		while(startPos >= 0) {
